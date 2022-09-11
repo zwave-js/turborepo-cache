@@ -1,11 +1,11 @@
 name: Test and Release
 
-# Run this job on all pushes to main and for pull requests
+# Run this job on all pushes to master and for pull requests
 on:
   push:
     branches:
       # This avoids having duplicate builds in non-forked PRs
-      - "main"
+      - "master"
   pull_request: {}
 
 # Cancel previous PR/branch runs when a new commit is pushed
@@ -45,11 +45,11 @@ jobs:
       run: yarn run lint
 
   # ===================
-  # Deploys successful builds on the main branch to Cloudflare
+  # Deploys successful builds on the master branch to Cloudflare
   deploy:
     if: |
       github.event_name == 'push' &&
-      github.ref == 'refs/heads/main'
+      github.ref == 'refs/heads/master'
 
     needs: [test]
 
