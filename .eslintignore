@@ -1,0 +1,7 @@
+build/
+node_modules/
+**/node_modules/
+.*
+*.config.js
+*.config.mjs
+docs/marked.min.js

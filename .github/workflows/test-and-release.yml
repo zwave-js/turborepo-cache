@@ -1,0 +1,78 @@
+name: Test and Release
+
+# Run this job on all pushes to main and for pull requests
+on:
+  push:
+    branches:
+      # This avoids having duplicate builds in non-forked PRs
+      - "main"
+  pull_request: {}
+
+# Cancel previous PR/branch runs when a new commit is pushed
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ===================
+  # Tests everything
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x] # This should be LTS
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install --immutable
+
+    - name: Check TypeScript code
+      run: yarn check
+
+    - name: Compile TypeScript code
+      run: yarn build
+
+    - name: Run linter
+      run: yarn run lint
+
+  # ===================
+  # Deploys successful builds on the main branch to Cloudflare
+  deploy:
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/main'
+
+    needs: [test]
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x] # This should be LTS
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install --immutable
+
+    - name: Publish to Cloudflare
+      uses: cloudflare/wrangler-action@2.0.0
+      with:
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

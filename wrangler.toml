@@ -1,0 +1,28 @@
+name = "zwave-js-turborepo-cache"
+usage_model = "bundled"
+workers_dev = true
+compatibility_date = "2022-08-28"
+
+main = "build/worker.js"
+
+kv_namespaces = [
+	{ binding = "TURBO_CACHE", id = "fe734ad580ec407f9fec0aeba92d0407" }
+]
+
+[build]
+command = "yarn build"
+watch_dir = "src"
+
+# ------------------------------------------------------------------------------
+
+# Required for Miniflare:
+[build.upload]
+format = "modules"
+
+[miniflare]
+port = 8787
+watch = true
+
+env_path = ".env"
+
+kv_persist = true

@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"noEmit": true,
+		"importsNotUsedAsValues": "error",
+		"pretty": true,
+		"diagnostics": true,
+		"noErrorTruncation": true,
+
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+
+		"target": "ESNext",
+		"module": "ES2020",
+		"moduleResolution": "Node",
+
+		/* Support for Cloudflare */
+		"types": ["@cloudflare/workers-types"],
+		"lib": ["ESNext"]
+	},
+	"include": ["src/**/*.ts", "test/**/*.ts"]
+}

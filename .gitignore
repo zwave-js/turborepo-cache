@@ -1,0 +1,26 @@
+node_modules/
+
+# Yarn config and stuff - we're not using Zero-Installs
+# because that would blow up the repo size even more
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+
+# Compiled source files
+**/build
+**/*.tsbuildinfo
+*.map
+
+.secrets
+.env
+.dev.vars
+keys.txt
+.mf
+test_requests
+
+# Auto-generated firmware index
+firmwares/index.json
