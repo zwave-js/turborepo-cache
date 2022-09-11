@@ -84,17 +84,17 @@ export function build(): ThrowableRouter {
 		}
 	);
 
+	router.post("/v8/artifacts/events", (_req: Request) => {
+		// Ignore
+		return new Response(null, { status: 200 });
+	});
+
 	router.all(
 		"/v8/artifacts/:hash",
 		(req: Request, _env: CloudflareEnvironment) => {
 			return clientError(`Method ${req.method} not allowed`, 405);
 		}
 	);
-
-	router.post("/v8/artifact/events", (_req: Request) => {
-		// Ignore
-		return new Response(null, { status: 200 });
-	});
 
 	router.all("*", () => missing());
 
